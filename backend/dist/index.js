@@ -22,14 +22,24 @@ const PORT = process.env.PORT || 3001;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.get("/tokenPrice", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { query } = req;
-    const responseOne = yield moralis_1.default.EvmApi.token.getTokenPrice({
-        address: String(query.addressOne),
-    });
-    const responseTwo = yield moralis_1.default.EvmApi.token.getTokenPrice({
-        address: String(query.addressTwo),
-    });
-    return res.send({ responseOne, responseTwo });
+    try {
+        const { query } = req;
+        const responseOne = yield moralis_1.default.EvmApi.token.getTokenPrice({
+            address: String(query.addressOne),
+        });
+        const responseTwo = yield moralis_1.default.EvmApi.token.getTokenPrice({
+            address: String(query.addressTwo),
+        });
+        const usdPrices = {
+            tokenOne: responseOne.raw.usdPrice,
+            tokenTwo: responseTwo.raw.usdPrice,
+            ratio: responseOne.raw.usdPrice / responseTwo.raw.usdPrice,
+        };
+        return res.send({ usdPrices });
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
 }));
 moralis_1.default.start({
     apiKey: process.env.MORALIS_KEY,

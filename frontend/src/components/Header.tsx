@@ -1,6 +1,7 @@
 import Logo from "../assets/moralis-logo.svg";
 import Eth from "../assets/eth.svg";
 import { Link } from "react-router-dom";
+import WalletConnectButton from "./WalletConnectButton";
 
 const Header = () => {
   return (
@@ -19,7 +20,7 @@ const Header = () => {
           <img src={Eth} alt="eth" className="eth" />
           Ethereum
         </div>
-        <div className="connectButton">Connect</div>
+        <WalletConnectButton />
       </div>
     </header>
   );
